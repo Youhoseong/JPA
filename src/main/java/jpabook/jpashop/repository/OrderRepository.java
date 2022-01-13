@@ -102,6 +102,7 @@ public class OrderRepository {
     }
 
     public List<Order> findAllWithMemberDelivery() {
+        // fetch는 실제 SQL에 있는 건 아님 => JPA 문법임
         return em.createQuery(
                 "select o from Order o" +
                         " join fetch o.member m" +
@@ -128,5 +129,6 @@ public class OrderRepository {
                 .setMaxResults(limit)
                 .getResultList();
     }
+
 }
 

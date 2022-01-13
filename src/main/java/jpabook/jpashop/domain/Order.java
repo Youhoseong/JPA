@@ -25,8 +25,11 @@ public class Order {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
+    // 지연 로딩은 new ProxyMember를 통해 가짜 객체를 넣는 것이다. (bytebuddy)
     private Member member;
 
+
+    // 1:N은 기본이 LAZY
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
