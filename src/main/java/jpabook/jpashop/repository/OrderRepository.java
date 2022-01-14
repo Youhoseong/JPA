@@ -110,7 +110,14 @@ public class OrderRepository {
                 .getResultList();
     }
 
+
     public List<Order> findAllWithItem() {
+        // => 동일한 Order가 각각 2개가 돼버리는 join
+        // db distinct 키워드 삽입
+        // jpa가 애플리케이션 단계에서 쿼리 결과를 같은 Order면 제거함
+
+        // => 데이터베이스 자체에서 페이징은 불가능함 (Order가 중복된 값이 있으므로) => 따라서 메모리에서 페이징을 진행한다 => 심각한 문제!!
+        // 1:다에 대한 페치 조인은 1개만 사용해야한다. 계속해서 조회 필드가 1:다 * 다 가돼버림
         return em.createQuery(
                 "select distinct o from Order o" +
                         " join fetch o.member m" +
@@ -119,16 +126,5 @@ public class OrderRepository {
                         " join fetch oi.item i", Order.class)
                 .getResultList();
     }
-
-    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
-        return em.createQuery(
-                "select o from Order o" +
-                        " join fetch o.member m" +
-                        " join fetch o.delivery d", Order.class)
-                .setFirstResult(offset)
-                .setMaxResults(limit)
-                .getResultList();
-    }
-
 }
 
