@@ -110,6 +110,17 @@ public class OrderRepository {
                 .getResultList();
     }
 
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        // fetch는 실제 SQL에 있는 건 아님 => JPA 문법임
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
 
     public List<Order> findAllWithItem() {
         // => 동일한 Order가 각각 2개가 돼버리는 join
