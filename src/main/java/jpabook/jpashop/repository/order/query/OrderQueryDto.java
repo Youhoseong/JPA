@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-
+@EqualsAndHashCode(of = "orderId")
 public class OrderQueryDto {
     private Long orderId;
     private String name;
